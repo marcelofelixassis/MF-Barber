@@ -1,4 +1,4 @@
-import { EyeIcon, FootprintsIcon, SearchIcon } from "lucide-react";
+import { SearchIcon } from "lucide-react";
 import Header from "./_components/header";
 import { Button } from "./_components/ui/button";
 import { Input } from "./_components/ui/input";
@@ -34,23 +34,11 @@ export default async function Home() {
 
         <div className="mt-6 flex gap-3 overflow-auto [&::-webkit-scrollbar]:hidden">
           <Button variant="secondary">
-            <Image
-              alt="Cabelo"
-              src="/hair.svg"
-              height={16}
-              width={16}
-              className="min-w-4"
-            />
+            <Image alt="Cabelo" src="/hair.svg" height={16} width={16} />
             Cabelo
           </Button>
           <Button variant="secondary">
-            <Image
-              alt="Barba"
-              src="/mustache.svg"
-              height={16}
-              width={16}
-              className="min-w-4"
-            />
+            <Image alt="Barba" src="/mustache.svg" height={16} width={16} />
             Barba
           </Button>
           <Button variant="secondary">
@@ -59,17 +47,35 @@ export default async function Home() {
               src="/razor-double-edge.svg"
               height={16}
               width={16}
-              className="min-w-4"
             />
             Acabamento
           </Button>
           <Button variant="secondary">
-            <FootprintsIcon height={16} width={16} />
-            Pézinho
+            <Image
+              alt="Acabamento"
+              src="/mingcute_eyebrow.svg"
+              height={16}
+              width={16}
+            />
+            Sobrancelha
           </Button>
           <Button variant="secondary">
-            <EyeIcon height={16} width={16} />
-            Sobrancelha
+            <Image
+              alt="Acabamento"
+              src="/ph_towel.svg"
+              height={16}
+              width={16}
+            />
+            Massagem
+          </Button>
+          <Button variant="secondary">
+            <Image
+              alt="Acabamento"
+              src="/hugeicons_shampoo.svg"
+              height={16}
+              width={16}
+            />
+            Hidratação
           </Button>
         </div>
 
