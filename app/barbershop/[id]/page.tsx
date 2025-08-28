@@ -1,14 +1,9 @@
+import BarbershopPhone from "@/app/_components/barbershop-phone";
 import BarbershopServiceItem from "@/app/_components/barbershop-service-item";
 import Footer from "@/app/_components/footer";
 import { Button } from "@/app/_components/ui/button";
 import { db } from "@/app/_lib/prisma";
-import {
-  ChevronLeftIcon,
-  MapPinIcon,
-  MenuIcon,
-  Smartphone,
-  StarIcon,
-} from "lucide-react";
+import { ChevronLeftIcon, MapPinIcon, MenuIcon, StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -84,15 +79,7 @@ export default async function BarbershopPage({ params }: BarbershopPageProps) {
       <div className="space-y-3 px-5 pb-12 pt-6">
         <h2 className="text-xs font-bold text-gray-400">CONTATO</h2>
         {barbershop.phones.map((phone, index) => (
-          <div key={index} className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Smartphone width={24} />
-              <p className="text-sm">{phone}</p>
-            </div>
-            <Button variant="outline" size="sm">
-              Copiar
-            </Button>
-          </div>
+          <BarbershopPhone key={index} phone={phone} />
         ))}
       </div>
 
