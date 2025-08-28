@@ -2,6 +2,7 @@
 
 import { Smartphone } from "lucide-react";
 import { Button } from "./ui/button";
+import { toast } from "sonner";
 
 type BarbershopPhoneProps = {
   phone: string;
@@ -10,6 +11,7 @@ type BarbershopPhoneProps = {
 export default function BarbershopPhone({ phone }: BarbershopPhoneProps) {
   function copyToClipboard() {
     navigator.clipboard.writeText(phone);
+    toast.success("Número copiado para a área de transferência!");
   }
 
   return (
