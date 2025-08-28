@@ -22,10 +22,10 @@ export default function BarbershopServiceItem({
           />
         </div>
         <div className="flex-1 space-y-2">
-          <p className="text-sm font-bold">{service.name}</p>
+          <p className="text-sm font-semibold">{service.name}</p>
           <p className="text-sm text-gray-400">{service.description}</p>
           <div className="flex items-center justify-between">
-            <span className="font-bold text-primary">
+            <span className="font-semibold text-primary">
               {Intl.NumberFormat("pt-BR", {
                 style: "currency",
                 currency: "BRL",
