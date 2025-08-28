@@ -1,0 +1,109 @@
+import Link from "next/link";
+import { Avatar, AvatarImage } from "./ui/avatar";
+import { Button } from "./ui/button";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "./ui/sheet";
+import { CalendarIcon, HomeIcon, LogOutIcon } from "lucide-react";
+import Image from "next/image";
+
+type SidebarSheetProps = {
+  children: React.ReactNode;
+};
+
+export default function SidebarSheet({ children }: SidebarSheetProps) {
+  return (
+    <Sheet>
+      <SheetTrigger asChild>{children}</SheetTrigger>
+      <SheetContent className="overflow-y-auto p-5">
+        <SheetHeader>
+          <SheetTitle className="text-left">Menu</SheetTitle>
+        </SheetHeader>
+
+        <div className="flex gap-3 border-b p-5">
+          <Avatar className="h-12 w-12">
+            <AvatarImage src="https://utfs.io/f/c97a2dc9-cf62-468b-a851-bfd2bdde775f-16p.png" />
+          </Avatar>
+          <div className="h-12">
+            <p className="font-bold">Pedro Gonçalves</p>
+            <p className="text-xs">pedrogoncalves@gmail.com</p>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-1 border-b py-6">
+          <SheetClose asChild>
+            <Button asChild className="justify-start">
+              <Link href="/">
+                <HomeIcon />
+                Ínicio
+              </Link>
+            </Button>
+          </SheetClose>
+          <Button variant="ghost" className="justify-start">
+            <CalendarIcon />
+            Agendamentos
+          </Button>
+        </div>
+
+        <div className="flex flex-col gap-1 border-b py-6">
+          <Button variant="ghost" className="justify-start">
+            <Image alt="Cabelo" src="/hair.svg" height={16} width={16} />
+            Cabelo
+          </Button>
+          <Button variant="ghost" className="justify-start">
+            <Image alt="Barba" src="/mustache.svg" height={16} width={16} />
+            Barba
+          </Button>
+          <Button variant="ghost" className="justify-start">
+            <Image
+              alt="Acabamento"
+              src="/razor-double-edge.svg"
+              height={16}
+              width={16}
+            />
+            Acabamento
+          </Button>
+          <Button variant="ghost" className="justify-start">
+            <Image
+              alt="Acabamento"
+              src="/mingcute_eyebrow.svg"
+              height={16}
+              width={16}
+            />
+            Sobrancelha
+          </Button>
+          <Button variant="ghost" className="justify-start">
+            <Image
+              alt="Acabamento"
+              src="/ph_towel.svg"
+              height={16}
+              width={16}
+            />
+            Massagem
+          </Button>
+          <Button variant="ghost" className="justify-start">
+            <Image
+              alt="Acabamento"
+              src="/hugeicons_shampoo.svg"
+              height={16}
+              width={16}
+            />
+            Hidratação
+          </Button>
+        </div>
+
+        <div className="py-6">
+          <Button variant="ghost" className="w-full justify-start">
+            <LogOutIcon />
+            Sair da conta
+          </Button>
+        </div>
+      </SheetContent>
+    </Sheet>
+  );
+}
