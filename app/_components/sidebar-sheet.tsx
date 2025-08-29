@@ -11,6 +11,7 @@ import {
 } from "./ui/sheet";
 import { CalendarIcon, HomeIcon, LogOutIcon } from "lucide-react";
 import Image from "next/image";
+import { quickSearchOptions } from "../consts/quick-search-options";
 
 type SidebarSheetProps = {
   children: React.ReactNode;
@@ -51,50 +52,17 @@ export default function SidebarSheet({ children }: SidebarSheetProps) {
         </div>
 
         <div className="flex flex-col gap-1 border-b py-6">
-          <Button variant="ghost" className="justify-start">
-            <Image alt="Cabelo" src="/hair.svg" height={16} width={16} />
-            Cabelo
-          </Button>
-          <Button variant="ghost" className="justify-start">
-            <Image alt="Barba" src="/mustache.svg" height={16} width={16} />
-            Barba
-          </Button>
-          <Button variant="ghost" className="justify-start">
-            <Image
-              alt="Acabamento"
-              src="/razor-double-edge.svg"
-              height={16}
-              width={16}
-            />
-            Acabamento
-          </Button>
-          <Button variant="ghost" className="justify-start">
-            <Image
-              alt="Acabamento"
-              src="/mingcute_eyebrow.svg"
-              height={16}
-              width={16}
-            />
-            Sobrancelha
-          </Button>
-          <Button variant="ghost" className="justify-start">
-            <Image
-              alt="Acabamento"
-              src="/ph_towel.svg"
-              height={16}
-              width={16}
-            />
-            Massagem
-          </Button>
-          <Button variant="ghost" className="justify-start">
-            <Image
-              alt="Acabamento"
-              src="/hugeicons_shampoo.svg"
-              height={16}
-              width={16}
-            />
-            Hidratação
-          </Button>
+          {quickSearchOptions.map((option) => (
+            <Button key={option.name} variant="ghost" className="justify-start">
+              <Image
+                alt={option.name}
+                src={option.image}
+                height={16}
+                width={16}
+              />
+              {option.name}
+            </Button>
+          ))}
         </div>
 
         <div className="py-6">
