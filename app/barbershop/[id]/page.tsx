@@ -1,9 +1,9 @@
-import BarbershopPhone from "@/app/_components/barbershop-phone";
-import BarbershopServiceItem from "@/app/_components/barbershop-service-item";
-import Footer from "@/app/_components/footer";
-import SidebarSheet from "@/app/_components/sidebar-sheet";
-import { Button } from "@/app/_components/ui/button";
-import { db } from "@/app/_lib/prisma";
+import BarbershopPhone from "@/app/components/barbershop-phone";
+import BarbershopServiceItem from "@/app/components/barbershop-service-item";
+import Footer from "@/app/components/footer";
+import SidebarSheet from "@/app/components/sidebar-sheet";
+import { Button } from "@/app/components/ui/button";
+import { db } from "@/app/lib/prisma";
 import { ChevronLeftIcon, MapPinIcon, MenuIcon, StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
