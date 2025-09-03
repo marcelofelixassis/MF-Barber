@@ -1,5 +1,6 @@
+"use client";
+
 import Link from "next/link";
-import { Avatar, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import {
   Sheet,
@@ -9,32 +10,66 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "./ui/sheet";
-import { CalendarIcon, HomeIcon, LogOutIcon } from "lucide-react";
+import { CalendarIcon, HomeIcon, LogInIcon, LogOutIcon } from "lucide-react";
 import Image from "next/image";
 import { quickSearchOptions } from "../consts/quick-search-options";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { authClient } from "../lib/auth-client";
+import AuthDialog from "./auth-dialog";
+import { cn } from "../lib/utils";
+import LogoutDialog from "./logout-dialog";
+import { useState } from "react";
 
 type SidebarSheetProps = {
   children: React.ReactNode;
 };
 
 export default function SidebarSheet({ children }: SidebarSheetProps) {
+  const { data: session } = authClient.useSession();
+
+  const [sheetOpen, setSheetOpen] = useState(false);
+
+  function closeSheet() {
+    setSheetOpen(false);
+  }
+
   return (
-    <Sheet>
+    <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
       <SheetTrigger asChild>{children}</SheetTrigger>
       <SheetContent className="overflow-y-auto p-5">
         <SheetHeader>
           <SheetTitle className="text-left">Menu</SheetTitle>
         </SheetHeader>
 
-        <div className="flex gap-3 border-b p-5">
-          <Avatar className="h-12 w-12">
-            <AvatarImage src="https://utfs.io/f/c97a2dc9-cf62-468b-a851-bfd2bdde775f-16p.png" />
-          </Avatar>
-          <div className="h-12">
-            <p className="font-bold">Pedro Gonçalves</p>
-            <p className="text-xs">pedrogoncalves@gmail.com</p>
+        {session?.user ? (
+          <div className="flex gap-3 border-b py-5">
+            <Avatar className="h-12 w-12 border-2 border-primary">
+              <AvatarImage src={session.user.image || ""} />
+              <AvatarFallback>
+                {session.user.name
+                  ? session.user.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")
+                      .toUpperCase()
+                  : "?"}
+              </AvatarFallback>
+            </Avatar>
+            <div className="h-12">
+              <p className="font-bold">{session.user.name}</p>
+              <p className="text-xs">{session.user.email}</p>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="flex items-center justify-between border-b py-5">
+            <h2 className="font-bold">Olá, faça seu login!</h2>
+            <AuthDialog>
+              <Button size="icon">
+                <LogInIcon />
+              </Button>
+            </AuthDialog>
+          </div>
+        )}
 
         <div className="flex flex-col gap-1 border-b py-6">
           <SheetClose asChild>
@@ -51,7 +86,11 @@ export default function SidebarSheet({ children }: SidebarSheetProps) {
           </Button>
         </div>
 
-        <div className="flex flex-col gap-1 border-b py-6">
+        <div
+          className={cn("flex flex-col gap-1 py-6", {
+            "border-b": session?.user,
+          })}
+        >
           {quickSearchOptions.map((option) => (
             <Button key={option.name} variant="ghost" className="justify-start">
               <Image
@@ -65,12 +104,16 @@ export default function SidebarSheet({ children }: SidebarSheetProps) {
           ))}
         </div>
 
-        <div className="py-6">
-          <Button variant="ghost" className="w-full justify-start">
-            <LogOutIcon />
-            Sair da conta
-          </Button>
-        </div>
+        {session?.user && (
+          <div className="py-6">
+            <LogoutDialog onLogoutComplete={closeSheet}>
+              <Button variant="ghost" className="w-full justify-start">
+                <LogOutIcon />
+                Sair da conta
+              </Button>
+            </LogoutDialog>
+          </div>
+        )}
       </SheetContent>
     </Sheet>
   );

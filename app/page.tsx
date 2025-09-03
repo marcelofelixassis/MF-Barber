@@ -8,6 +8,7 @@ import BarbershopItem from "./components/barbershop-item";
 import Footer from "./components/footer";
 import { quickSearchOptions } from "./consts/quick-search-options";
 import BookingItem from "./components/booking-item";
+import WelcomeUser from "./components/welcome-user";
 
 export default async function Home() {
   const barbershops = await db.barbershop.findMany({});
@@ -21,7 +22,7 @@ export default async function Home() {
     <div>
       <Header />
       <div className="p-5">
-        <h2 className="text-xl font-bold">Olá, Marcelo</h2>
+        <WelcomeUser />
         <p>Terça feira, 05 de agosto.</p>
 
         <div className="mt-6 flex items-center gap-2">
