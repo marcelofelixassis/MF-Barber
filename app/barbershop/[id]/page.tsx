@@ -1,6 +1,5 @@
 import BarbershopPhone from "@/app/components/barbershop-phone";
 import BarbershopServiceItem from "@/app/components/barbershop-service-item";
-import Footer from "@/app/components/footer";
 import SidebarSheet from "@/app/components/sidebar-sheet";
 import { Button } from "@/app/components/ui/button";
 import { db } from "@/app/lib/prisma";
@@ -85,8 +84,6 @@ export default async function BarbershopPage({ params }: BarbershopPageProps) {
           <BarbershopPhone key={index} phone={phone} />
         ))}
       </div>
-
-      <Footer />
     </div>
   );
 }

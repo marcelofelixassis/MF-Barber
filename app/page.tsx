@@ -5,7 +5,6 @@ import { Input } from "./components/ui/input";
 import Image from "next/image";
 import { db } from "./lib/prisma";
 import BarbershopItem from "./components/barbershop-item";
-import Footer from "./components/footer";
 import { quickSearchOptions } from "./consts/quick-search-options";
 import BookingItem from "./components/booking-item";
 import WelcomeUser from "./components/welcome-user";
@@ -77,7 +76,6 @@ export default async function Home() {
           ))}
         </div>
       </div>
-      <Footer />
     </div>
   );
 }
