@@ -14,18 +14,32 @@ export default async function BarbershopPage({
 }: BarbershopPagePropsType) {
   const barbershops = await db.barbershop.findMany({
     where: {
-      name: {
-        contains: searchParams?.search,
-        mode: "insensitive",
-      },
+      OR: [
+        {
+          name: {
+            contains: searchParams?.search,
+            mode: "insensitive",
+          },
+        },
+        {
+          services: {
+            some: {
+              name: {
+                contains: searchParams?.search,
+                mode: "insensitive",
+              },
+            },
+          },
+        },
+      ],
     },
   });
 
   return (
     <div>
       <Header />
-      <div className="px-5">
-        <div className="mt-6">
+      <div className="px-5 py-6">
+        <div>
           <BarbershopSearchForm initialSearch={searchParams?.search} />
         </div>
 

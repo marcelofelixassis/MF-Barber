@@ -45,7 +45,7 @@ export default function BarbershopSearchForm({
           render={({ field }) => (
             <FormItem className="flex-1">
               <FormControl>
-                <Input {...field} placeholder="Faça sua busca..." />
+                <Input {...field} placeholder="Buscar por serviço ou nome..." />
               </FormControl>
               <FormMessage />
             </FormItem>
