@@ -9,18 +9,24 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
 
+type BarbershopSearchFormPropsType = {
+  initialSearch?: string;
+};
+
 const SearchFormSchema = z.object({
   search: z.string().trim().min(1, { message: "Digite algo para buscar" }),
 });
 
 type SearchFormType = z.infer<typeof SearchFormSchema>;
 
-export default function BarbershopSearchForm() {
+export default function BarbershopSearchForm({
+  initialSearch,
+}: BarbershopSearchFormPropsType) {
   const router = useRouter();
 
   const searchForm = useForm<SearchFormType>({
     resolver: zodResolver(SearchFormSchema),
-    defaultValues: { search: "" },
+    defaultValues: { search: initialSearch || "" },
   });
 
   function applySearch(data: SearchFormType) {
