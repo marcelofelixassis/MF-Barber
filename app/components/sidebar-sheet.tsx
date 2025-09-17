@@ -92,15 +92,19 @@ export default function SidebarSheet({ children }: SidebarSheetProps) {
           })}
         >
           {quickSearchOptions.map((option) => (
-            <Button key={option.name} variant="ghost" className="justify-start">
-              <Image
-                alt={option.name}
-                src={option.image}
-                height={16}
-                width={16}
-              />
-              {option.name}
-            </Button>
+            <SheetClose asChild key={option.name}>
+              <Button asChild variant="ghost" className="justify-start">
+                <Link href={`/barbershop?search=${option.name}`}>
+                  <Image
+                    alt={option.name}
+                    src={option.image}
+                    height={16}
+                    width={16}
+                  />
+                  {option.name}
+                </Link>
+              </Button>
+            </SheetClose>
           ))}
         </div>
 
