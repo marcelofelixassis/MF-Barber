@@ -1,13 +1,12 @@
-import { SearchIcon } from "lucide-react";
 import Header from "./components/header";
 import { Button } from "./components/ui/button";
-import { Input } from "./components/ui/input";
 import Image from "next/image";
 import { db } from "./lib/prisma";
 import BarbershopItem from "./components/barbershop-item";
 import { quickSearchOptions } from "./consts/quick-search-options";
 import BookingItem from "./components/booking-item";
 import WelcomeUser from "./components/welcome-user";
+import BarbershopSearchForm from "./components/barbershop-search-form";
 
 export default async function Home() {
   const barbershops = await db.barbershop.findMany({});
@@ -24,11 +23,8 @@ export default async function Home() {
         <WelcomeUser />
         <p>Terça feira, 05 de agosto.</p>
 
-        <div className="mt-6 flex items-center gap-2">
-          <Input placeholder="Faça sua busca aqui..." />
-          <Button size="icon">
-            <SearchIcon />
-          </Button>
+        <div className="mt-6">
+          <BarbershopSearchForm />
         </div>
 
         <div className="mt-6 flex gap-3 overflow-auto [&::-webkit-scrollbar]:hidden">
