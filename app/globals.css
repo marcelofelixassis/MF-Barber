@@ -34,6 +34,11 @@
 
     --radius: 0.5rem;
   }
+
+  .capitalize-calendar .rdp-caption_label,
+  .capitalize-calendar .rdp-weekday {
+    text-transform: capitalize;
+  }
 }
 
 @layer base {
