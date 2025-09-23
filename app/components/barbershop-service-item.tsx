@@ -1,14 +1,17 @@
 import Image from "next/image";
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
-import { BarbershopService } from "@prisma/client";
+import { Barbershop, BarbershopService } from "@prisma/client";
+import CreateBookingSheet from "./create-booking-sheet";
 
 type BarbershopServiceItemProps = {
   service: BarbershopService;
+  barbershop: Barbershop;
 };
 
 export default function BarbershopServiceItem({
   service,
+  barbershop,
 }: BarbershopServiceItemProps) {
   return (
     <Card>
@@ -31,9 +34,12 @@ export default function BarbershopServiceItem({
                 currency: "BRL",
               }).format(Number(service.price))}
             </span>
-            <Button variant="secondary" size="sm">
-              Reservar
-            </Button>
+
+            <CreateBookingSheet service={service} barbershop={barbershop}>
+              <Button variant="secondary" size="sm">
+                Reservar
+              </Button>
+            </CreateBookingSheet>
           </div>
         </div>
       </CardContent>
