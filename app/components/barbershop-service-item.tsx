@@ -1,8 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
 import { Barbershop, BarbershopService } from "@prisma/client";
 import CreateBookingSheet from "./create-booking-sheet";
+import { authClient } from "../lib/auth-client";
+import AuthDialog from "./auth-dialog";
 
 type BarbershopServiceItemProps = {
   service: BarbershopService;
@@ -13,6 +17,8 @@ export default function BarbershopServiceItem({
   service,
   barbershop,
 }: BarbershopServiceItemProps) {
+  const { data: session } = authClient.useSession();
+
   return (
     <Card>
       <CardContent className="flex gap-3 p-3">
@@ -35,11 +41,19 @@ export default function BarbershopServiceItem({
               }).format(Number(service.price))}
             </span>
 
-            <CreateBookingSheet service={service} barbershop={barbershop}>
-              <Button variant="secondary" size="sm">
-                Reservar
-              </Button>
-            </CreateBookingSheet>
+            {session?.user ? (
+              <CreateBookingSheet service={service} barbershop={barbershop}>
+                <Button variant="secondary" size="sm">
+                  Reservar
+                </Button>
+              </CreateBookingSheet>
+            ) : (
+              <AuthDialog>
+                <Button variant="secondary" size="sm">
+                  Reservar
+                </Button>
+              </AuthDialog>
+            )}
           </div>
         </div>
       </CardContent>

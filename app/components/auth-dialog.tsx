@@ -27,6 +27,7 @@ export default function AuthDialog({ children }: AuthDialogPropsType) {
     await authClient.signIn.social(
       {
         provider: "github",
+        callbackURL: window.location.href,
       },
       {
         onRequest: () => {
@@ -39,7 +40,6 @@ export default function AuthDialog({ children }: AuthDialogPropsType) {
           setIsPending(null);
           toast.error(error.message);
         },
-        callbackURL: "/",
       },
     );
   }

@@ -14,8 +14,10 @@ import { useState } from "react";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import { Barbershop, BarbershopService } from "@prisma/client";
-import { addMonths, format, startOfDay } from "date-fns";
+import { addMonths, format, set, startOfDay } from "date-fns";
 import { toast } from "sonner";
+import { createBooking } from "../actions/create-booking";
+import { authClient } from "../lib/auth-client";
 
 const TIME_LIST = [
   "08:00",
@@ -52,12 +54,18 @@ export default function CreateBookingSheet({
   barbershop,
   children,
 }: CreateBookingSheetPropsType) {
+  const { data: session } = authClient.useSession();
+
+  const [open, setOpen] = useState(false);
   const [selectedDay, setSelectedDay] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState<string>();
 
-  console.log(selectedTime);
-
   const isDisabledConfirmButton = !selectedDay || !selectedTime;
+
+  function resetBookingData() {
+    setSelectedDay(new Date());
+    setSelectedTime(undefined);
+  }
 
   function handleChangeDate(newDate?: Date) {
     if (newDate) {
@@ -69,16 +77,45 @@ export default function CreateBookingSheet({
     setSelectedTime(newTime);
   }
 
-  function handleCreateNewBooking() {
+  function handleOnOpenChange(isOpen: boolean) {
+    setOpen(isOpen);
+  }
+
+  async function handleCreateNewBooking() {
     if (isDisabledConfirmButton) {
       toast.info("Selecione uma data e horário");
+      return;
+    }
+
+    if (session?.user) {
+      try {
+        const bookingDate = set(selectedDay, {
+          hours: Number(selectedTime.split(":")[0]),
+          minutes: Number(selectedTime.split(":")[1]),
+        });
+
+        await createBooking({
+          serviceId: service.id,
+          userId: session?.user.id,
+          date: bookingDate,
+        });
+
+        setOpen(false);
+        toast.success("Reserva confirmada!");
+      } catch (error) {
+        console.error("Error on create a new booking", error);
+        toast.error("Erro ao criar reserva!");
+      }
     }
   }
 
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={handleOnOpenChange}>
       <SheetTrigger asChild>{children}</SheetTrigger>
-      <SheetContent className="overflow-auto px-0 [&::-webkit-scrollbar]:hidden">
+      <SheetContent
+        onCloseAutoFocus={resetBookingData}
+        className="overflow-auto px-0 [&::-webkit-scrollbar]:hidden"
+      >
         <SheetHeader>
           <SheetTitle className="px-5 text-left">Fazer Reserva</SheetTitle>
         </SheetHeader>
