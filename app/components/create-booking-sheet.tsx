@@ -17,7 +17,6 @@ import { Barbershop, BarbershopService } from "@prisma/client";
 import { addMonths, format, set, startOfDay } from "date-fns";
 import { toast } from "sonner";
 import { createBooking } from "../actions/create-booking";
-import { authClient } from "../lib/auth-client";
 
 const TIME_LIST = [
   "08:00",
@@ -54,8 +53,6 @@ export default function CreateBookingSheet({
   barbershop,
   children,
 }: CreateBookingSheetPropsType) {
-  const { data: session } = authClient.useSession();
-
   const [open, setOpen] = useState(false);
   const [selectedDay, setSelectedDay] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState<string>();
@@ -87,25 +84,23 @@ export default function CreateBookingSheet({
       return;
     }
 
-    if (session?.user) {
-      try {
-        const bookingDate = set(selectedDay, {
-          hours: Number(selectedTime.split(":")[0]),
-          minutes: Number(selectedTime.split(":")[1]),
-        });
+    try {
+      const bookingDate = set(selectedDay, {
+        hours: Number(selectedTime.split(":")[0]),
+        minutes: Number(selectedTime.split(":")[1]),
+      });
 
-        await createBooking({
-          serviceId: service.id,
-          userId: session?.user.id,
-          date: bookingDate,
-        });
+      await createBooking({
+        serviceId: service.id,
+        date: bookingDate,
+      });
 
-        setOpen(false);
-        toast.success("Reserva confirmada!");
-      } catch (error) {
-        console.error("Error on create a new booking", error);
-        toast.error("Erro ao criar reserva!");
-      }
+      setOpen(false);
+      toast.success("Reserva confirmada!");
+    } catch (e) {
+      const error = e as Error;
+      console.error("Error on create a new booking", error);
+      toast.error(error.message || "Erro ao criar reserva!");
     }
   }
 
