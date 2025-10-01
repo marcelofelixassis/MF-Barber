@@ -17,34 +17,11 @@ import { Barbershop, BarbershopService } from "@prisma/client";
 import { addMonths, format, set, startOfDay } from "date-fns";
 import { toast } from "sonner";
 import { createBooking } from "../actions/create-booking";
-
-const TIME_LIST = [
-  "08:00",
-  "08:30",
-  "09:00",
-  "09:30",
-  "10:00",
-  "10:30",
-  "11:00",
-  "11:30",
-  "12:00",
-  "12:30",
-  "13:00",
-  "13:30",
-  "14:00",
-  "14:30",
-  "15:00",
-  "15:30",
-  "16:00",
-  "16:30",
-  "17:00",
-  "17:30",
-  "18:00",
-];
+import CreateBookingTimeList from "./create-booking-time-list";
 
 type CreateBookingSheetPropsType = {
   service: BarbershopService;
-  barbershop: Pick<Barbershop, "name">;
+  barbershop: Pick<Barbershop, "name" | "id">;
   children: React.ReactNode;
 };
 
@@ -66,6 +43,7 @@ export default function CreateBookingSheet({
 
   function handleChangeDate(newDate?: Date) {
     if (newDate) {
+      setSelectedTime(undefined);
       setSelectedDay(newDate);
     }
   }
@@ -128,16 +106,12 @@ export default function CreateBookingSheet({
           />
         </div>
         <div className="flex gap-3 overflow-auto border-b border-solid p-5 [&::-webkit-scrollbar]:hidden">
-          {TIME_LIST.map((time) => (
-            <Button
-              key={time}
-              variant={selectedTime === time ? "default" : "outline"}
-              onClick={() => handleChangeTime(time)}
-              className="rounded-full"
-            >
-              {time}
-            </Button>
-          ))}
+          <CreateBookingTimeList
+            date={selectedDay}
+            barbershopId={barbershop.id}
+            setTime={handleChangeTime}
+            currentTime={selectedTime}
+          />
         </div>
         {selectedTime && (
           <div className="px-5 pt-5">
