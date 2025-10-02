@@ -31,6 +31,35 @@ const TIME_LIST = [
   "18:00",
 ];
 
+function formatAvailableTimes(date: Date, bookings: Booking[]) {
+  const now = new Date();
+  let availableTimes = [...TIME_LIST];
+
+  if (date.toDateString() === now.toDateString()) {
+    availableTimes = availableTimes.filter((time) => {
+      const [hours, minutes] = time.split(":").map(Number);
+
+      const slotDate = new Date(date);
+      slotDate.setHours(hours, minutes, 0, 0);
+
+      return slotDate.getTime() > now.getTime();
+    });
+  }
+
+  if (bookings.length === 0) {
+    return availableTimes;
+  }
+
+  const unavailableTimes = bookings.map((b) =>
+    b.date.toLocaleTimeString("pt-BR", {
+      hour: "2-digit",
+      minute: "2-digit",
+    }),
+  );
+
+  return availableTimes.filter((time) => !unavailableTimes.includes(time));
+}
+
 type CreateBookingTimeListPropsType = {
   date: Date;
   barbershopId: string;
@@ -47,21 +76,6 @@ export default function CreateBookingTimeList({
   const [isLoading, setIsLoading] = useState(false);
   const [avaliableTimes, setAvaliableTimes] = useState<string[]>([]);
 
-  function formatAvailableTimes(bookings: Booking[]) {
-    if (bookings.length === 0) {
-      return TIME_LIST;
-    }
-
-    const unavailableTimes = bookings.map((b) =>
-      b.date.toLocaleTimeString("pt-BR", {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-    );
-
-    return TIME_LIST.filter((time) => !unavailableTimes.includes(time));
-  }
-
   useEffect(() => {
     const fetch = async () => {
       try {
@@ -70,12 +84,12 @@ export default function CreateBookingTimeList({
           date,
           barbershopId,
         });
-        const result = formatAvailableTimes(bookings);
+        const result = formatAvailableTimes(date, bookings);
         setAvaliableTimes(result);
       } catch (e) {
         const error = e as Error;
         console.error("Error on find barbershop bookings by date", error);
-        toast.error(error.message || "Erro ao procurar horários livres!");
+        toast.error(error.message || "Erro ao procurar horários disponíveis!");
       } finally {
         setIsLoading(false);
       }
@@ -90,6 +104,12 @@ export default function CreateBookingTimeList({
           <Skeleton key={t} className="h-10 min-w-16 rounded-full" />
         ))}
       </>
+    );
+  }
+
+  if (avaliableTimes.length === 0) {
+    return (
+      <span className="flex h-10 items-center">Nenhum horário disponível</span>
     );
   }
 
