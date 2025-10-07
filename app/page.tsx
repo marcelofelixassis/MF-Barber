@@ -8,6 +8,8 @@ import WelcomeUser from "./components/welcome-user";
 import BarbershopSearchForm from "./components/barbershop-search-form";
 import Link from "next/link";
 import HomeUserBookingList from "./components/home-user-booking-list";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 export default async function Home() {
   const barbershops = await db.barbershop.findMany({});
@@ -17,12 +19,17 @@ export default async function Home() {
     },
   });
 
+  const date = new Date();
+  const formattedDate = format(date, "EEEE',' dd 'de' MMMM", { locale: ptBR })
+    .replace("-feira", " feira")
+    .replace(/^./, (c) => c.toUpperCase());
+
   return (
     <div>
       <Header />
       <div className="p-5">
         <WelcomeUser />
-        <p>Terça feira, 05 de agosto.</p>
+        <p>{formattedDate}</p>
 
         <div className="mt-6">
           <BarbershopSearchForm />
