@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { authClient } from "../lib/auth-client";
 import { Button } from "./ui/button";
 import {
@@ -22,8 +23,12 @@ export default function LogoutDialog({
   children,
   onLogoutComplete,
 }: LogoutDialogPropsType) {
+  const router = useRouter();
+
   async function signOut() {
     await authClient.signOut();
+    router.replace("/");
+    router.refresh();
     onLogoutComplete();
   }
 
