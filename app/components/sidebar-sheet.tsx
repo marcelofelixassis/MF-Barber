@@ -80,10 +80,21 @@ export default function SidebarSheet({ children }: SidebarSheetProps) {
               </Link>
             </Button>
           </SheetClose>
-          <Button variant="ghost" className="justify-start">
-            <CalendarIcon />
-            Agendamentos
-          </Button>
+          {session?.user ? (
+            <Button asChild variant="ghost" className="justify-start">
+              <Link href="/bookings">
+                <CalendarIcon />
+                Agendamentos
+              </Link>
+            </Button>
+          ) : (
+            <AuthDialog>
+              <Button variant="ghost" className="justify-start">
+                <CalendarIcon />
+                Agendamentos
+              </Button>
+            </AuthDialog>
+          )}
         </div>
 
         <div
