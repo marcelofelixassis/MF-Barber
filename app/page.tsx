@@ -7,6 +7,7 @@ import { quickSearchOptions } from "./consts/quick-search-options";
 import WelcomeUser from "./components/welcome-user";
 import BarbershopSearchForm from "./components/barbershop-search-form";
 import Link from "next/link";
+import HomeUserBookingList from "./components/home-user-booking-list";
 
 export default async function Home() {
   const barbershops = await db.barbershop.findMany({});
@@ -52,9 +53,7 @@ export default async function Home() {
           />
         </div>
 
-        {/* <h2 className="mb-3 mt-6 text-xs font-bold text-gray-400">
-          AGENDAMENTOS
-        </h2> */}
+        <HomeUserBookingList />
 
         <h2 className="mb-3 mt-6 text-xs font-bold text-gray-400">
           RECOMENDADOS
