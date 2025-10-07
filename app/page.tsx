@@ -4,7 +4,6 @@ import Image from "next/image";
 import { db } from "./lib/prisma";
 import BarbershopItem from "./components/barbershop-item";
 import { quickSearchOptions } from "./consts/quick-search-options";
-import BookingItem from "./components/booking-item";
 import WelcomeUser from "./components/welcome-user";
 import BarbershopSearchForm from "./components/barbershop-search-form";
 import Link from "next/link";
@@ -53,11 +52,9 @@ export default async function Home() {
           />
         </div>
 
-        <h2 className="mb-3 mt-6 text-xs font-bold text-gray-400">
+        {/* <h2 className="mb-3 mt-6 text-xs font-bold text-gray-400">
           AGENDAMENTOS
-        </h2>
-
-        <BookingItem />
+        </h2> */}
 
         <h2 className="mb-3 mt-6 text-xs font-bold text-gray-400">
           RECOMENDADOS
