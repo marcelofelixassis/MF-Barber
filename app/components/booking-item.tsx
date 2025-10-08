@@ -1,3 +1,5 @@
+"use client";
+
 import { Prisma } from "@prisma/client";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import { Badge } from "./ui/badge";
@@ -18,6 +20,20 @@ import Image from "next/image";
 import { ptBR } from "date-fns/locale";
 import BarbershopPhone from "./barbershop-phone";
 import { Button } from "./ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog";
+import { deleteBooking } from "../actions/delete-booking";
+import { toast } from "sonner";
+import { useState } from "react";
+import { Loader2Icon } from "lucide-react";
 
 interface IBookingItemProps {
   booking: Prisma.BookingGetPayload<{
@@ -32,6 +48,10 @@ interface IBookingItemProps {
 }
 
 export default function BookingItem({ booking }: IBookingItemProps) {
+  const [deleteLoad, setDeleteLoad] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [bookingSheetOpen, setBookingSheetOpen] = useState(false);
+
   const date = new Date(booking.date);
 
   const month = date.toLocaleString("pt-BR", { month: "long" });
@@ -43,8 +63,24 @@ export default function BookingItem({ booking }: IBookingItemProps) {
 
   const isConfirmed = isFuture(date);
 
+  async function handleDeleteBooking() {
+    try {
+      setDeleteLoad(true);
+      await deleteBooking(booking.id);
+      toast.success("Reserva cancelada!");
+      setDeleteLoad(false);
+      setDeleteDialogOpen(false);
+      setBookingSheetOpen(false);
+    } catch (e) {
+      const error = e as Error;
+      console.error("Error on cancel booking", error);
+      toast.error(error.message || "Erro ao cancelar reserva!");
+      setDeleteLoad(false);
+    }
+  }
+
   return (
-    <Sheet>
+    <Sheet open={bookingSheetOpen} onOpenChange={setBookingSheetOpen}>
       <SheetTrigger asChild>
         <Card>
           <CardContent className="flex justify-between p-0">
@@ -177,9 +213,38 @@ export default function BookingItem({ booking }: IBookingItemProps) {
             </Button>
           </SheetClose>
           {isConfirmed ? (
-            <Button className="flex-1" variant="destructive">
-              Cancelar Reserva
-            </Button>
+            <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+              <DialogTrigger asChild>
+                <Button className="flex-1" variant="destructive">
+                  Cancelar Reserva
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="w-[80vw] max-w-[400px] rounded p-5">
+                <DialogHeader className="space-y-3 sm:text-center">
+                  <DialogTitle>Cancelar Reserva</DialogTitle>
+                  <DialogDescription>
+                    Tem certeza que deseja cancelar esse agendamento?
+                  </DialogDescription>
+                </DialogHeader>
+                <DialogFooter className="flex flex-row gap-3">
+                  <DialogClose asChild>
+                    <Button variant="secondary" size="sm" className="w-full">
+                      Voltar
+                    </Button>
+                  </DialogClose>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={handleDeleteBooking}
+                    disabled={deleteLoad}
+                    className="w-full"
+                  >
+                    {deleteLoad && <Loader2Icon className="animate-spin" />}
+                    Confirmar
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           ) : (
             <Button className="flex-1">Avaliar</Button>
           )}
