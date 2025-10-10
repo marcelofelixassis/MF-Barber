@@ -6,6 +6,7 @@ import {
   Sheet,
   SheetClose,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -39,6 +40,7 @@ export default function SidebarSheet({ children }: SidebarSheetProps) {
       <SheetContent className="overflow-y-auto p-5">
         <SheetHeader>
           <SheetTitle className="text-left">Menu</SheetTitle>
+          <SheetDescription />
         </SheetHeader>
 
         {session?.user ? (

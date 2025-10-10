@@ -5,6 +5,7 @@ import { Calendar } from "./ui/calendar";
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
@@ -91,6 +92,7 @@ export default function CreateBookingSheet({
       >
         <SheetHeader>
           <SheetTitle className="px-5 text-left">Fazer Reserva</SheetTitle>
+          <SheetDescription />
         </SheetHeader>
         <div className="border-b border-solid p-5">
           <Calendar
