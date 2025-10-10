@@ -20,6 +20,7 @@ export default function BarbershopItem({ barbershop }: IBarbershopItemProps) {
             alt={barbershop.name}
             src={barbershop.imageUrl}
             className="rounded-2xl object-cover"
+            sizes="167px"
           />
           <Badge
             variant="secondary"
