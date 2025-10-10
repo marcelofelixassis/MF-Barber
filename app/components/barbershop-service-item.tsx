@@ -28,6 +28,7 @@ export default function BarbershopServiceItem({
             fill
             src={service.imageUrl}
             className="rounded-lg object-cover"
+            sizes="100px"
           />
         </div>
         <div className="flex-1 space-y-2">

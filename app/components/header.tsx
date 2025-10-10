@@ -10,7 +10,9 @@ export default function Header() {
     <Card className="rounded-none">
       <CardContent className="flex flex-row items-center justify-between p-5">
         <Link href={"/"}>
-          <Image alt="FSW Barber" src="/logo.svg" height={18} width={120} />
+          <div className="relative h-[22px] w-[120px]">
+            <Image alt="FSW Barber" src="/logo.svg" fill />
+          </div>
         </Link>
         <SidebarSheet>
           <Button size="icon" variant="outline">
